@@ -1,0 +1,74 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+      
+      - name: Create local.properties
+        run: |
+          echo "flutter.sdk=$FLUTTER_ROOT" > android/local.properties
+          echo "sdk.dir=$ANDROID_SDK_ROOT" >> android/local.properties
+          echo "flutter.versionName=1.0.0" >> android/local.properties
+          echo "flutter.versionCode=1" >> android/local.properties
+      
+      - name: Create asset directories
+        run: |
+          mkdir -p assets/animations assets/icon assets/images assets/fonts
+          # Create placeholder icon
+          convert -size 512x512 xc:'#6366F1' -gravity center -fill white -pointsize 200 -annotate +0+0 '🪶' assets/icon/app_icon.png 2>/dev/null || true
+          # Create minimal placeholder files if needed
+          touch assets/animations/.gitkeep
+          touch assets/images/.gitkeep
+          touch assets/fonts/.gitkeep
+      
+      - name: Get dependencies
+        run: flutter pub get
+      
+      - name: Build APK
+        run: flutter build apk --release --no-tree-shake-icons
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: translated-by-hisham-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+      
+      - name: Create Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v1.0.0-build${{ github.run_number }}
+          name: "Translated by Hisham v1.0.0 (Build #${{ github.run_number }})"
+          body: |
+            🪶 Translated by Hisham - Professional Translation App
+            
+            ✅ ترجمة صوتية ونصية فورية
+            ✅ زر عائم يشتغل فوق كل التطبيقات
+            ✅ وضع البث المباشر
+            ✅ ترجمة ثنائية الاتجاه
+            ✅ 20+ لغة مدعومة
+            
+            صنع هشام 🪶
+          files: build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
