@@ -1,0 +1,80 @@
+name: translated_by_hisham
+description: Professional AI Translation App - Translated by Hisham
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State Management
+  provider: ^6.1.2
+
+  # Speech & TTS
+  speech_to_text: ^6.6.0
+  flutter_tts: ^3.8.5
+
+  # Translation & Language Detection
+  http: ^1.2.1
+  google_mlkit_language_id: ^0.10.0
+
+  # Overlay & Background
+  flutter_overlay_window: ^0.4.2
+  flutter_background_service: ^5.0.5
+  flutter_background_service_android: ^6.2.2
+
+  # Storage & Permissions
+  shared_preferences: ^2.2.3
+  permission_handler: ^11.3.1
+
+  # Media
+  video_player: ^2.8.6
+  file_picker: ^8.0.7
+
+  # UI & Animations
+  google_fonts: ^6.2.1
+  animated_text_kit: ^4.2.2
+  lottie: ^3.1.2
+  flutter_animate: ^4.5.0
+  shimmer: ^3.0.0
+  blur: ^3.1.0
+  glass_kit: ^3.0.0
+  gradient_borders: ^1.0.0
+  percent_indicator: ^4.2.3
+  fl_chart: ^0.68.0
+  font_awesome_flutter: ^10.7.0
+
+  # Utils
+  uuid: ^4.4.0
+  intl: ^0.19.0
+  path_provider: ^2.1.4
+  connectivity_plus: ^6.0.5
+  package_info_plus: ^8.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/animations/
+    - assets/images/
+    - assets/fonts/
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/Tajawal-Regular.ttf
+        - asset: assets/fonts/Tajawal-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Tajawal-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Tajawal-Light.ttf
+          weight: 300
