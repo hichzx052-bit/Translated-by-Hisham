@@ -21,11 +21,24 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Build Main App
+      - name: Recreate Android project files
         working-directory: translated_by_hisham
         run: |
-          flutter pub get
-          flutter build apk --release
+          # Save our custom files
+          cp android/app/src/main/AndroidManifest.xml /tmp/manifest_main.xml
+          cp android/app/build.gradle /tmp/build_main.gradle 2>/dev/null || true
+          # Create fresh Flutter android structure
+          flutter create --platforms android --org com.hichamdzz .
+          # Restore our custom manifest
+          cp /tmp/manifest_main.xml android/app/src/main/AndroidManifest.xml
+
+      - name: Get dependencies
+        working-directory: translated_by_hisham
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: translated_by_hisham
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload Main APK
         uses: actions/upload-artifact@v4
@@ -49,11 +62,20 @@ jobs:
           flutter-version: '3.24.0'
           channel: 'stable'
 
-      - name: Build Admin App
+      - name: Recreate Android project files
         working-directory: update_manager
         run: |
-          flutter pub get
-          flutter build apk --release
+          cp android/app/src/main/AndroidManifest.xml /tmp/manifest_admin.xml 2>/dev/null || true
+          flutter create --platforms android --org com.hichamdzz .
+          cp /tmp/manifest_admin.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+
+      - name: Get dependencies
+        working-directory: update_manager
+        run: flutter pub get
+
+      - name: Build APK
+        working-directory: update_manager
+        run: flutter build apk --release --no-tree-shake-icons
 
       - name: Upload Admin APK
         uses: actions/upload-artifact@v4
