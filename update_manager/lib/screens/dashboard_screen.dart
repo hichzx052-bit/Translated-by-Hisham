@@ -77,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Row(
                     children: [
                       Expanded(child: _statusCard('الحالة',
-                          _appEnabled ? '🟢 نشط' : '🔴 متوقف',
+                          _appEnabled ? 'نشط' : 'متوقف',
                           const Color(0xFF06B6D4))),
                       const SizedBox(width: 12),
                       Expanded(child: _statusCard('الإصدار', _currentVersion, const Color(0xFF8B5CF6))),
@@ -136,7 +136,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   // Developer info
                   Center(
                     child: Text(
-                      '🛡️ Developer: Hichamdzz',
+                      'Developer: Hichamdzz',
                       style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12),
                     ),
                   ),

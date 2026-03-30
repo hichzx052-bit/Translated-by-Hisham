@@ -212,9 +212,13 @@ class _TextTranslationScreenState extends State<TextTranslationScreen> {
                                       width: 22, height: 22,
                                       child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                     )
-                                  : const Text(
-                                      'ترجم 🌍',
-                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                  : const Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.translate, color: Colors.white, size: 20),
+                                        SizedBox(width: 8),
+                                        Text('ترجم', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                                      ],
                                     ),
                             ),
                           ),

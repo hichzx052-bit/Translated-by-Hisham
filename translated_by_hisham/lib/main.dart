@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'models/app_state.dart';
 import 'screens/splash_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/onboarding_screen.dart';
 import 'theme/app_theme.dart';
 import 'services/background_service.dart';
 
@@ -11,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
   // Initialize background service
-  await BackgroundService.initialize();
+  await BackgroundServiceManager().initialize();
   
   // Set system UI overlay style
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -136,9 +138,16 @@ class _FloatingOverlayWidgetState extends State<FloatingOverlayWidget>
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                '🌍 ترجمة فورية',
-                style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+              const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.translate, color: Colors.white, size: 18),
+                  SizedBox(width: 6),
+                  Text(
+                    'ترجمة فورية',
+                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               GestureDetector(
                 onTap: () => setState(() => _expanded = false),
@@ -234,6 +243,10 @@ class TranslatedByHisham extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
         home: const SplashScreen(),
+        routes: {
+          '/home': (context) => const HomeScreen(),
+          '/onboarding': (context) => const OnboardingScreen(),
+        },
       ),
     );
   }

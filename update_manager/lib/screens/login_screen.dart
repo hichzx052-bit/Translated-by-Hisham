@@ -223,8 +223,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   width: 22, height: 22,
                                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                 )
-                              : const Text(
-                                  'دخول 🔐',
+                              : const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.login, color: Colors.white, size: 20), SizedBox(width: 8), Text(
+                                  'دخول',),],),
                                   style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                                 ),
                         ),
@@ -232,7 +232,7 @@ class _LoginScreenState extends State<LoginScreen>
                     ),
                     const SizedBox(height: 40),
                     Text(
-                      '🛡️ منطقة محمية — للمطور فقط',
+                      'منطقة محمية — للمطور فقط',
                       style: TextStyle(color: Colors.white.withOpacity(0.2), fontSize: 12),
                     ),
                   ],

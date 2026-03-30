@@ -88,17 +88,14 @@ class BackgroundServiceManager {
 
       if (text.isNotEmpty) {
         final translationService = TranslationService();
-        final result = await translationService.translate(
-          text: text,
-          targetLang: targetLang,
-          sourceLang: sourceLang,
-        );
+        final result = await translationService.translate(text, from: sourceLang, to: targetLang);
 
         service.invoke('translationResult', {
           'original': text,
-          'translated': result.translatedText,
-          'success': result.success,
+          'translated': result,
+          'success': true,
         });
+
       }
     });
 

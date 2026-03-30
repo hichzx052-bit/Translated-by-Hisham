@@ -201,7 +201,7 @@ class _UpdatePushScreenState extends State<UpdatePushScreen> {
                       ),
                       child: Center(
                         child: Text(
-                          _pushing ? 'جاري الإرسال...' : 'إرسال التحديث 🚀',
+                          _pushing ? 'جاري الإرسال...' : 'إرسال التحديث',
                           style: TextStyle(
                             color: _pushing ? Colors.white38 : Colors.white,
                             fontSize: 16,

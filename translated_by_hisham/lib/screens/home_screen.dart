@@ -307,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             const SizedBox(width: 10),
             Text(
-              _overlayActive ? '⬛ إيقاف الزر العائم' : '🔵 تشغيل الزر العائم',
+              _overlayActive ? 'إيقاف الزر العائم' : 'تشغيل الزر العائم',
               style: TextStyle(
                 color: _overlayActive ? const Color(0xFF34D399) : const Color(0xFF818CF8),
                 fontSize: 15,

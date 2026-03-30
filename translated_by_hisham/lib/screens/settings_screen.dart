@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/app_state.dart';
 import '../widgets/glass_container.dart';
+import 'developer_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -129,9 +130,23 @@ class SettingsScreen extends StatelessWidget {
                           children: [
                             _infoTile(Icons.info_outline, 'الإصدار', '1.0.0'),
                             _divider(),
-                            _infoTile(Icons.code, 'المطور', 'Hisham'),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                PageRouteBuilder(
+                                  pageBuilder: (_, __, ___) => const DeveloperScreen(),
+                                  transitionsBuilder: (_, a, __, c) => SlideTransition(
+                                    position: Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
+                                        .animate(CurvedAnimation(parent: a, curve: Curves.easeOutCubic)),
+                                    child: c,
+                                  ),
+                                  transitionDuration: const Duration(milliseconds: 350),
+                                ),
+                              ),
+                              child: _infoTile(Icons.code, 'المطور', 'Hichamdzz'),
+                            ),
                             _divider(),
-                            _infoTile(Icons.update, 'آخر تحديث', '2026-03-29'),
+                            _infoTile(Icons.update, 'آخر تحديث', '2026-03-30'),
                           ],
                         ),
                       ),

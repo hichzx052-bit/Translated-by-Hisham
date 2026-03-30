@@ -331,13 +331,24 @@ class _LiveModeScreenState extends State<LiveModeScreen>
             ],
           ),
           child: Center(
-            child: Text(
-              _isLive ? '⬛ إيقاف البث' : '🔴 بدء البث المباشر',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  _isLive ? Icons.stop : Icons.fiber_manual_record,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _isLive ? 'إيقاف البث' : 'بدء البث المباشر',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

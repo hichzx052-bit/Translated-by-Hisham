@@ -74,7 +74,7 @@ class _FeatureManagerScreenState extends State<FeatureManagerScreen> {
                     gradient: AdminTheme.neonGradient,
                   ),
                   child: const Center(
-                    child: Text('إضافة ➕', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: Text('إضافة', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
               ),
@@ -166,7 +166,7 @@ class _FeatureManagerScreenState extends State<FeatureManagerScreen> {
                       child: _pushing
                           ? const SizedBox(width: 16, height: 16,
                               child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                          : const Text('دفع 🚀', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                          : const Text('دفع', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
