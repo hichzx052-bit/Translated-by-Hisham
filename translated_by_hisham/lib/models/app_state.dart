@@ -283,66 +283,6 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Aliases used by screens
-  LanguageModel get sourceLanguage => _sourceLang;
-  LanguageModel get targetLanguage => _targetLang;
-  String get sourceText => _currentSourceText;
-  String get translatedText => _currentTranslatedText;
-
-  void setSourceLanguage(LanguageModel lang) => setSourceLang(lang);
-  void setTargetLanguage(LanguageModel lang) => setTargetLang(lang);
-  void setVoice(VoiceModel voice) => setSelectedVoice(voice);
-
-  // Services
-  final TranslationService _translationService = TranslationService();
-  final SpeechService _speechService = SpeechService();
-  final TtsService _ttsService = TtsService();
-
-  Future<String> translateText(String text) async {
-    setTranslating(true);
-    try {
-      final result = await _translationService.translate(
-        text: text,
-        targetLang: _targetLang.code,
-        sourceLang: _sourceLang.code,
-      );
-      setCurrentTexts(text, result.translatedText);
-      _detectedLanguage = result.detectedSourceLang;
-      return result.translatedText;
-    } finally {
-      setTranslating(false);
-    }
-  }
-
-  Future<void> speakText(String text, String langCode) async {
-    setSpeaking(true);
-    try {
-      await _ttsService.speak(text, langCode);
-    } finally {
-      setSpeaking(false);
-    }
-  }
-
-  Future<void> startListening({
-    Function(String)? onResult,
-    String? localeId,
-  }) async {
-    setListening(true);
-    await _speechService.startListening(
-      onResult: onResult ?? (text) {
-        _currentSourceText = text;
-        translateText(text);
-      },
-      onError: (e) => setListening(false),
-      localeId: localeId ?? _sourceLang.code,
-    );
-  }
-
-  void stopListening() {
-    _speechService.stopListening();
-    setListening(false);
-  }
-
   Future<void> _savePrefs() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(AppConstants.keySourceLang, _sourceLang.code);

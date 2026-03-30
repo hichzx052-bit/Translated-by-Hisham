@@ -67,9 +67,6 @@ class LanguageModel {
   @override
   int get hashCode => code.hashCode;
 
-  // Alias getters for screens compatibility
-  static List<LanguageModel> get supportedLanguages => allWithAuto;
-
   @override
   String toString() => 'LanguageModel($code: $name)';
 }
