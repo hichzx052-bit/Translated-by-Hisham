@@ -223,9 +223,16 @@ class _LoginScreenState extends State<LoginScreen>
                                   width: 22, height: 22,
                                   child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                 )
-                              : const Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(Icons.login, color: Colors.white, size: 20), SizedBox(width: 8), Text(
-                                  'دخول',),],),
-                                  style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                              : const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.login, color: Colors.white, size: 20),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      'دخول',
+                                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
                                 ),
                         ),
                       ),
