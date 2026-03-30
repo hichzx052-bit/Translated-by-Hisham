@@ -13,6 +13,9 @@ class LanguageModel {
     this.isRtl = false,
   });
 
+  // Alias for compatibility with widgets
+  String get nativeName => name;
+
   factory LanguageModel.fromCode(String code) {
     return LanguageModel(
       code: code,
@@ -21,6 +24,9 @@ class LanguageModel {
       isRtl: AppConstants.isRtl(code),
     );
   }
+
+  // Alias used by screens
+  static List<LanguageModel> get supportedLanguages => allWithAuto;
 
   static List<LanguageModel> get all {
     return AppConstants.supportedLanguages.entries
@@ -60,6 +66,9 @@ class LanguageModel {
 
   @override
   int get hashCode => code.hashCode;
+
+  // Alias getters for screens compatibility
+  static List<LanguageModel> get supportedLanguages => allWithAuto;
 
   @override
   String toString() => 'LanguageModel($code: $name)';

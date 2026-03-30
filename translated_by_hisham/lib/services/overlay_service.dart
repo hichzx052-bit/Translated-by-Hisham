@@ -17,6 +17,19 @@ class OverlayService {
 
   bool get isShowing => _isShowing;
 
+  // Static convenience methods for screens
+  static Future<void> showOverlay() async {
+    await OverlayService().showBubble();
+  }
+
+  static Future<void> closeOverlay() async {
+    await OverlayService().hideBubble();
+  }
+
+  static Future<bool> isOverlayActive() async {
+    return OverlayService().isShowing;
+  }
+
   Future<bool> hasPermission() async {
     return await FlutterOverlayWindow.isPermissionGranted();
   }

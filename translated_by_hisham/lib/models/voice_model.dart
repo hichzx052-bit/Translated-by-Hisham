@@ -17,6 +17,7 @@ class VoiceModel {
     required this.emoji,
   });
 
+  static List<VoiceModel> get availableVoices => defaultVoices;
   static List<VoiceModel> get defaultVoices => [
         const VoiceModel(
           id: 'male_deep',

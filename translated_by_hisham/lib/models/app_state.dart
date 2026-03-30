@@ -4,6 +4,13 @@ import 'language_model.dart';
 import 'voice_model.dart';
 import '../utils/constants.dart';
 import '../utils/api_config.dart';
+import '../services/translation_service.dart';
+import '../services/speech_service.dart';
+import '../services/tts_service.dart';
+import '../services/overlay_service.dart';
+import '../services/translation_service.dart';
+import '../services/speech_service.dart';
+import '../services/tts_service.dart';
 
 class TranslationHistory {
   final String id;
@@ -62,9 +69,20 @@ class AppState extends ChangeNotifier {
     'auto_detect': true,
   };
 
+  // Services
+  final TranslationService _translationService = TranslationService();
+  final SpeechService _speechService = SpeechService();
+  final TtsService _ttsService = TtsService();
+
   // Getters
   LanguageModel get sourceLang => _sourceLang;
   LanguageModel get targetLang => _targetLang;
+
+  // Alias getters for screen compatibility
+  LanguageModel get sourceLanguage => _sourceLang;
+  LanguageModel get targetLanguage => _targetLang;
+  String get sourceText => _currentSourceText;
+  String get translatedText => _currentTranslatedText;
   bool get autoDetectSource => _autoDetectSource;
   VoiceModel get selectedVoice => _selectedVoice;
   double get speechRate => _speechRate;
@@ -106,6 +124,58 @@ class AppState extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  // Alias methods for screen compatibility
+  void setSourceLanguage(LanguageModel lang) => setSourceLang(lang);
+  void setTargetLanguage(LanguageModel lang) => setTargetLang(lang);
+  void setVoice(VoiceModel voice) => setSelectedVoice(voice);
+
+  Future<void> startListening({Function(String)? onResult}) async {
+    await _speechService.initialize();
+    setListening(true);
+    await _speechService.startListening(
+      onResult: (text) {
+        _currentSourceText = text;
+        notifyListeners();
+        onResult?.call(text);
+      },
+      onError: (error) {
+        setListening(false);
+      },
+      localeId: _sourceLang.code == 'auto' ? null : _sourceLang.code,
+    );
+  }
+
+  void stopListening() {
+    _speechService.stopListening();
+    setListening(false);
+  }
+
+  Future<void> speakText(String text, String langCode) async {
+    if (text.trim().isEmpty) return;
+    setSpeaking(true);
+    await _ttsService.speak(text, langCode);
+    setSpeaking(false);
+  }
+
+  Future<String> translateText(String text) async {
+    if (text.trim().isEmpty) return '';
+    setTranslating(true);
+    try {
+      final result = await _translationService.translate(
+        text,
+        from: _sourceLang.code,
+        to: _targetLang.code,
+      );
+      _currentTranslatedText = result;
+      notifyListeners();
+      setTranslating(false);
+      return result;
+    } catch (e) {
+      setTranslating(false);
+      return '';
+    }
   }
 
   void setSourceLang(LanguageModel lang) {
@@ -211,6 +281,66 @@ class AppState extends ChangeNotifier {
   void setAppEnabled(bool enabled) {
     _appEnabled = enabled;
     notifyListeners();
+  }
+
+  // Aliases used by screens
+  LanguageModel get sourceLanguage => _sourceLang;
+  LanguageModel get targetLanguage => _targetLang;
+  String get sourceText => _currentSourceText;
+  String get translatedText => _currentTranslatedText;
+
+  void setSourceLanguage(LanguageModel lang) => setSourceLang(lang);
+  void setTargetLanguage(LanguageModel lang) => setTargetLang(lang);
+  void setVoice(VoiceModel voice) => setSelectedVoice(voice);
+
+  // Services
+  final TranslationService _translationService = TranslationService();
+  final SpeechService _speechService = SpeechService();
+  final TtsService _ttsService = TtsService();
+
+  Future<String> translateText(String text) async {
+    setTranslating(true);
+    try {
+      final result = await _translationService.translate(
+        text: text,
+        targetLang: _targetLang.code,
+        sourceLang: _sourceLang.code,
+      );
+      setCurrentTexts(text, result.translatedText);
+      _detectedLanguage = result.detectedSourceLang;
+      return result.translatedText;
+    } finally {
+      setTranslating(false);
+    }
+  }
+
+  Future<void> speakText(String text, String langCode) async {
+    setSpeaking(true);
+    try {
+      await _ttsService.speak(text, langCode);
+    } finally {
+      setSpeaking(false);
+    }
+  }
+
+  Future<void> startListening({
+    Function(String)? onResult,
+    String? localeId,
+  }) async {
+    setListening(true);
+    await _speechService.startListening(
+      onResult: onResult ?? (text) {
+        _currentSourceText = text;
+        translateText(text);
+      },
+      onError: (e) => setListening(false),
+      localeId: localeId ?? _sourceLang.code,
+    );
+  }
+
+  void stopListening() {
+    _speechService.stopListening();
+    setListening(false);
   }
 
   Future<void> _savePrefs() async {
